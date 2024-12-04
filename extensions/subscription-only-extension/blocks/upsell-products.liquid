@@ -1,0 +1,70 @@
+{% schema %}
+{
+  "name": "Upsell Products",
+  "target": "section",
+  "available_if": "{{ app.metafields.mtappsremixbillingdemo.hasPlan }}",
+  "stylesheet": "style.css",
+  "settings": [
+    {
+      "type": "number",
+      "id": "collection_id",
+      "label": "Collection ID",
+      "default": 123456789,
+      "info": "Enter the ID of the collection you want to display products from."
+    },
+    {
+      "type": "text",
+      "id": "section_heading",
+      "label": "Heading",
+      "default": "You May Also Like"
+    },
+    {
+      "type": "number",
+      "id": "maximum_product",
+      "label": "No. of Products",
+      "default": 3
+    }
+  ]
+}
+{% endschema %}
+{% assign desired_collection_id = block.settings.collection_id %}
+{% assign found_collection = false %}
+{% assign has_plan = app.metafields.mtappsremixbillingdemo.hasPlan %}
+{% if has_plan == true %}
+  {% for collection in collections %}
+    {% if collection.id == desired_collection_id %}
+      {% assign found_collection = true %}
+      {% assign collection_products = collection.products %}
+      {% break %}
+    {% endif %}
+  {% endfor %}
+
+  {% if found_collection %}
+    <h2>{{ block.settings.section_heading }}</h2>
+    <div class="upsell-products">
+      {% assign max_products = block.settings.maximum_product | plus: 0 %}
+      {% for product in collection_products limit: max_products %}
+        <div class="upsell-product">
+          <a href="{{ product.url }}">
+            {% if product.featured_image %}
+              <img src="/cdn/shop/{{ product.featured_image | image_url: 'medium' }}" alt="{{ product.title }}" width="300" height="300">
+            {% else %}
+              <img src="https://cdn.shopify.com/s/files/1/0880/1242/3453/files/Yvonne_APPDCS-1322.webp?v=1718015543" alt="{{ product.title }}" width="300" height="300">
+            {% endif %}
+            <h3 class="card__heading h4">{{ product.title }}</h3>
+            <p>{{ product.price | money }}</p>
+            <form method="post" action="/cart/add" id="add-to-cart-form">
+              <input type="hidden" name="id" value="{{ product.variants.first.id }}" />
+              <input min="1" type="hidden" id="quantity" name="quantity" value="1"/>
+              <input type="submit" value="ADD TO CART" class="add-to-cart-button product-form__submit button" />
+            </form>
+          </a>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p>No products found in the collection with the ID "{{ desired_collection_id }}".</p>
+  {% endif %}
+{% else %}
+  <p>You do not have an active subscription plan. Please subscribe to view upsell products.</p>
+{% endif %}

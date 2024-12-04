@@ -1,0 +1,24 @@
+# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
+
+client_id = "89752431dba01d30a865ce8560e25663"
+name = "upsell-app-after-payment"
+handle = "upsell-app-after-payment"
+application_url = "https://strip-mason-wv-twin.trycloudflare.com"
+embedded = true
+
+[build]
+automatically_update_urls_on_dev = true
+dev_store_url = "brittanyperille-redesign.myshopify.com"
+
+[auth]
+redirect_urls = [
+  "https://strip-mason-wv-twin.trycloudflare.com/auth/callback",
+  "https://strip-mason-wv-twin.trycloudflare.com/auth/shopify/callback",
+  "https://strip-mason-wv-twin.trycloudflare.com/api/auth/callback"
+]
+
+[webhooks]
+api_version = "2024-07"
+
+[pos]
+embedded = false

@@ -1,0 +1,26 @@
+.upsell-product {
+    width: calc(29% - var(--grid-desktop-horizontal-spacing)* 3 / 4);
+    max-width: calc(30% - var(--grid-desktop-horizontal-spacing)* 3 / 4);
+    margin: 17px;
+}
+.upsell-products {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    column-gap: 20px;
+}
+.upsell-product a {
+    text-decoration: none;
+}
+.upsell-product h3, .upsell-product p {
+    margin: 0;
+}
+@media screen and (max-width:767px) {
+    .upsell-product {
+        width: 100%;
+        max-width: 100%;
+    }
+    .upsell-products {
+        flex-direction: column;
+    }
+}
